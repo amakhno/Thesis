@@ -64,9 +64,9 @@ def Outer_func(eps_f) :
     e_f = E_f(eps_f)
     k_i1 = Get_k_i(eps_i)
     k_f = Get_k_f(eps_f)
-    result = Phi(e_f) / ( k_f*(k_i-k_f)**4 *(k_i+k_f)**2 )
+    result = Phi(e_f) / (cmath.exp(2*cmath.pi*Lambda_f(k_i1))* k_f*(k_i-k_f)**4 *(k_i+k_f)**2 )
     return result
-#"cmath.exp(2*cmath.pi*Lambda_f(k_i1))*"
+    
 def X_0(eps_f) :
     k_i1 = Get_k_i(eps_i)
     k_f = Get_k_f(eps_f)
