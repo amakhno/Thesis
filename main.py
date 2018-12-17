@@ -26,19 +26,21 @@ mu = 0.1
 plank = 1.054572e-27
 ksi_b = 1
 e = 0.5
-lambda_i = 0.1
 k_i = 0.2
-delta = 0.1
-delta_f = 0.2e2
-eps_i = (plank**2 * k_i**2)/(2*mu)
-multiple = (4*2**0.5/cmath.pi) * ( (g_v**2 * aplha_e**4 * Z * (Z + 1) * Z1**4 * mu**(9/2)) ) \
-    / ( eps_i**1.5 * (1 - cmath.exp(-2*cmath.pi * lambda_i))) * ksi_b
 
 def Lambda_i (k_i) :
     return Z*Z1*e**2*mu / (plank**2*k_i)
 
 def Lambda_f (k_f) :
     return (Z+1)*Z1*e**2*mu/ (plank**2*k_f)
+
+print (Lambda_i(k_i))
+lambda_i = 0.2 #Lambda_i(k_i)
+delta = 0.1
+delta_f = 0.2e2
+eps_i = (plank**2 * k_i**2)/(2*mu)
+multiple = (4*2**0.5/cmath.pi) * ( (g_v**2 * aplha_e**4 * Z * (Z + 1) * Z1**4 * mu**(9/2)) ) \
+    / ( eps_i**1.5 * (1 - cmath.exp(-2*cmath.pi * lambda_i))) * ksi_b
 
 def Get_k_i (eps_i) :
     return math.sqrt(2*mu*eps_i) / plank**2
@@ -62,15 +64,13 @@ def E_f(eps_f) :
 
 def Outer_func(eps_f) :
     e_f = E_f(eps_f)
-    k_i1 = Get_k_i(eps_i)
     k_f = Get_k_f(eps_f)
-    result = Phi(e_f) / (cmath.exp(2*cmath.pi*Lambda_f(k_i1))* k_f*(k_i-k_f)**4 *(k_i+k_f)**2 )
+    result = 0 #Phi(e_f) / (cmath.exp(2*cmath.pi*Lambda_f(k_i))* k_f*(k_i-k_f)**4 *(k_i+k_f)**2 )
     return result
     
 def X_0(eps_f) :
-    k_i1 = Get_k_i(eps_i)
     k_f = Get_k_f(eps_f)
-    result = -4*k_i1*k_f / (k_i1 - k_f)**2
+    result = -4*k_i*k_f / (k_i - k_f)**2
     return result
 
 def ResultFunc(x, eps_f) :
