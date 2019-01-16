@@ -17,7 +17,7 @@ gv = 2.9899e-12
 aa = 1/137.03
 
 send_ef = 0
-send_ef = 0
+send_ei = 0
 
 m = mn*a1*a2/(a1+a2)
 print(a1*a2/(a1+a2))
@@ -74,6 +74,7 @@ def fun1(t):
 
 
 def sig1(ef):
+    global send_ef
     send_ef = ef
     return integrate.quad(lambda x: fun1(x), -1, 1)[0]
 
@@ -88,10 +89,11 @@ def fun2(ef):
 
 def sigb(ei):
     res = integrate.quad(lambda x: fun2(x), 0.0, ei-d-df-1)[0]
-    return z2*z2*256*math.sqrt(2)*aa*aa*aa*aa*gv*gv*m*m*m*m*m*z1*(z1+1)*z2*z2/(105*math.pi*ei)/(1-exp(-2*pi*li(ei)))*res
+    return z2*z2*256*math.sqrt(2)*aa*aa*aa*aa*gv*gv*m*m*m*m*m*z1*(z1+1)*z2*z2/(105*math.pi*ei)/(1-math.exp(-2*math.pi*li(ei)))*res
 
 
 def fun3(ei):
+    global send_ei
     send_ei = ei
     return math.exp(-ei/tt)*ei*sigb(ei)
 
