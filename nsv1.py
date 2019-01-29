@@ -1,6 +1,7 @@
 import mpmath as mp
 import math
 import scipy.integrate as integrate
+import numpy as np
 
 mev = 0.511
 n = 1
@@ -35,11 +36,6 @@ def li(ei):
     return z1*z2*aa*math.sqrt(m/2/ei)
 
 
-def sigv(d):
-    integral(d+df+1, 100, 3, igt)
-    return math.sqrt(8/pi/m/tt/tt/tt)*igt*0.09747
-
-
 def fun3(ei):
     send_ei = ei
     return exp(-ei/tt)*ei*sigb(ei)
@@ -55,12 +51,12 @@ def fun1(t):
     c = 3 + 2j
     x = 0.2
     rez = mp.hyp2f1(a, b, c, x)
-    print(rez)
+    #print(rez)
     ef = send_ef
     ei = send_ei
     kki = math.sqrt(2*m*ei)
     kkf = math.sqrt(2*m*ef)
-    print(kki, kkf, t)
+    #print(kki, kkf, t)
     x = 2*(1-t)/(ki(ei)/kf(ef)+kf(ef)/ki(ei)-2*t)
     llf = (z1+1)*z2*aa*math.sqrt(m/2/ef)
     lli = z1*z2*aa*math.sqrt(m/2/ei)
@@ -68,7 +64,7 @@ def fun1(t):
     b = 3j
     c = 3 + 2j
     x = 0.2
-    print(rez)
+    #print(rez)
     per = kki*kki+kkf*kkf
     return 1e-300*(rez.real*rez.real+rez.imag*rez.imag)/(per-2*kki*kkf*t)/(per-2*kki*kkf*t)
 
@@ -82,9 +78,10 @@ def sig1(ef):
 def fun2(ef):
     ei = send_ei
     e = ei-d-df-1
+    sub_exp = np.float64(2*math.pi*lf(ef))
     c = 1e300 * math.sqrt(e-ef)*(e-ef)*(e-ef)*(e-ef)/(ki(ei)
                                                       * ki(ei)-kf(ef)*kf(ef))/(ki(ei)*ki(ei)-kf(ef)*kf(ef))
-    return c/(math.exp(2*math.pi*lf(ef))-1)*sig1(ef)
+    return c/(np.exp(sub_exp)-1)*sig1(ef)
 
 
 def sigb(ei):
@@ -100,7 +97,7 @@ def fun3(ei):
 
 def sigv(d):
     res = integrate.quad(lambda x: fun3(x), d+df+1, 100)
-    return math.sqrt(8/pi/m/tt/tt/tt)*igt*0.09747
+    return math.sqrt(8/math.pi/m/tt/tt/tt)*res[0]*0.09747
 
 
 print(sigv(d)*44.722E-12)

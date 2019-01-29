@@ -9,14 +9,14 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
-            "console": "integratedTerminal"
+            "console": "externalTerminal"
         },
         {
             "name": "Debug nvs1.py (External Terminal)",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/nsv1.py",
-            "console": "externalTerminal"
+            "console": "integratedTerminal"
         }
     ]
 }
