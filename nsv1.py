@@ -3,7 +3,7 @@ import math
 import scipy.integrate as integrate
 import numpy as np
 
-np.seterr(all='raise')
+np.seterr(all='print')
 
 mev = 0.511
 n = 1

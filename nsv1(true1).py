@@ -3,7 +3,7 @@ import math
 import scipy.integrate as integrate
 import numpy as np
 
-np.seterr(all='raise')
+np.seterr(all='print')
 
 mev = 0.511
 n = 1
@@ -23,7 +23,6 @@ send_ef = 0
 send_ei = 0
 
 m = mn*a1*a2/(a1+a2)
-print(a1*a2/(a1+a2))
 
 d = d/mev
 df = df/mev
@@ -40,12 +39,6 @@ def lf(ef):
 
 def li(ei):
     return z1*z2*aa*math.sqrt(m/2/ei)
-
-
-def fun3(ei):
-    send_ei = ei
-    return exp(-ei/tt)*ei*sigb(ei)
-
 
 def ki(ei):
     return math.sqrt(2*m*ei)
@@ -80,12 +73,6 @@ def fun2(ef):
     e = ei-d-df-1
     c = 1e300*np.sqrt(e-ef)*(e-ef)*(e-ef)*(e-ef)/(ki*ki-kf*kf)/(ki*ki-kf*kf)
     return c/(np.exp(2*np.pi*lf)-1)*sig1(ef)
-
-
-def sigb(ei):
-    res = integrate.quad(lambda x: fun2(x), 0.0, ei-d-df-1)[0]
-    return z2*z2*256*math.sqrt(2)*aa*aa*aa*aa*gv*gv*m*m*m*m*m*z1*(z1+1)*z2*z2/(105*math.pi*ei)/(1-math.exp(-2*math.pi*li(ei)))*res
-
 
 def fun3(ei):
     global send_ei
