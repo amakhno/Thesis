@@ -17,6 +17,13 @@
             "request": "launch",
             "program": "${workspaceFolder}/nsv1.py",
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Terminal (integrated)",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
         }
     ]
 }

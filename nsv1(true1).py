@@ -52,27 +52,18 @@ def ki(ei):
 
 
 def fun1(t):
-    a = 1 + 2j
-    b = 3j
-    c = 3 + 2j
-    x = 0.2
-    rez = mp.hyp2f1(a, b, c, x)
-    # print(rez)
     ef = send_ef
     ei = send_ei
-    kki = math.sqrt(2*m*ei)
-    kkf = math.sqrt(2*m*ef)
-    #print(kki, kkf, t)
-    x = 2*(1-t)/(ki(ei)/kf(ef)+kf(ef)/ki(ei)-2*t)
-    llf = (z1+1)*z2*aa*math.sqrt(m/2/ef)
-    lli = z1*z2*aa*math.sqrt(m/2/ei)
-    a = 1 + 2j
-    b = 3j
-    c = 3 + 2j
-    x = 0.2
-    # print(rez)
-    per = kki*kki+kkf*kkf
-    return 1e-300*(rez.real*rez.real+rez.imag*rez.imag)/(per-2*kki*kkf*t)/(per-2*kki*kkf*t)
+    kf = np.sqrt(2*m*ef)
+    lf = (z1+1)*z2*aa*np.sqrt(m/2/ef)
+    ki = np.sqrt(2*m*ei)
+    li = z1*z2*aa*np.sqrt(m/2/ei)
+    x = 2*(1-t)/(ki/kf+kf/ki-2*t)
+    a = 1 + li*1j
+    b = -lf*1j
+    c = 1
+    rez = mp.hyp2f1(a, b, c, x)
+    return 1e-300*(rez.real*rez.real+rez.imag*rez.imag)/(ki*ki+kf*kf-2*ki*kf*t)/(ki*ki+kf*kf-2*ki*kf*t)
 
 
 def sig1(ef):
@@ -83,11 +74,12 @@ def sig1(ef):
 
 def fun2(ef):
     ei = send_ei
+    kf = np.sqrt(2*m*ef)
+    lf = (z1+1)*z2*aa*np.sqrt(m/2/ef)
+    ki = np.sqrt(2*m*ei)
     e = ei-d-df-1
-    sub_exp = np.float64(2*math.pi*lf(ef))
-    c = 1e300 * math.sqrt(e-ef)*(e-ef)*(e-ef)*(e-ef)/(ki(ei)
-                                                      * ki(ei)-kf(ef)*kf(ef))/(ki(ei)*ki(ei)-kf(ef)*kf(ef))
-    return c/(np.exp(sub_exp)-1)*sig1(ef)
+    c = 1e300*np.sqrt(e-ef)*(e-ef)*(e-ef)*(e-ef)/(ki*ki-kf*kf)/(ki*ki-kf*kf)
+    return c/(np.exp(2*np.pi*lf)-1)*sig1(ef)
 
 
 def sigb(ei):
@@ -98,13 +90,16 @@ def sigb(ei):
 def fun3(ei):
     global send_ei
     send_ei = ei
-    return math.exp(-ei/tt)*ei*sigb(ei)
+    li = z1*z2*aa*np.sqrt(m/2/ei)
+    res = integrate.quad(lambda x: fun2(x), 0.0, ei-d-df-1)[0]
+    ww = ei*np.exp(-ei/tt)
+    return ww*z2*z2*256*np.sqrt(2)*aa*aa*aa*aa*gv*gv*m*m*m*m*m*z1*(z1+1)* z2*z2/(105*math.pi*ei)/(1-np.exp(-2*math.pi*li))*res
 
 
-def sigv(d):
+def nsv(d):
     res = integrate.quad(lambda x: fun3(x), d+df+1, 100)
-    return math.sqrt(8/math.pi/m/tt/tt/tt)*res[0]*0.09747
+    return math.sqrt(8/math.pi/m/tt/tt/tt)*res[0]*0.19448
 
 
-print(sigv(d)*44.722E-12)
+print(nsv(d)*44.722E-12)
 exit
