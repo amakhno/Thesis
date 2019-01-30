@@ -55,8 +55,12 @@ def fun1(t):
     a = 1 + li*1j
     b = -lf*1j
     c = 1
-    rez = mp.hyp2f1(a, b, c, x)
-    return 1e-300*(rez.real*rez.real+rez.imag*rez.imag)/(ki*ki+kf*kf-2*ki*kf*t)/(ki*ki+kf*kf-2*ki*kf*t)
+    res = mp.hyp2f1(a, b, c, x)
+    checkRes = (1-x)**(c-a-b) * mp.hyp2f1(c-a, c-b, c, x)
+    diff = np.sqrt((res.imag - checkRes.imag)**2 + (res.real - checkRes.real)**2)
+    if (diff > 1e-10):
+        print("Error: " + diff)
+    return 1e-300*(res.real*res.real+res.imag*res.imag)/(ki*ki+kf*kf-2*ki*kf*t)/(ki*ki+kf*kf-2*ki*kf*t)
 
 
 def sig1(ef):
