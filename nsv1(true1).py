@@ -2,6 +2,8 @@ import mpmath as mp
 import math
 import scipy.integrate as integrate
 import numpy as np
+import pylab
+import multiprocessing
 
 np.seterr(all='print')
 
@@ -88,9 +90,16 @@ def fun3(ei):
 
 
 def nsv(d):
-    res = integrate.quad(lambda x: fun3(x), d+df+1, 100)
+    res = integrate.quad(lambda x: fun3(x), d+df+1, np.inf)
     return math.sqrt(8/math.pi/m/tt/tt/tt)*res[0]*0.19448
 
 
-print(nsv(d)*44.722E-12)
-exit
+#print(nsv(d)*44.722E-12)
+if __name__ == "__main__":
+    vectorisedFunc3 = np.vectorize(fun3)
+
+    x = np.linspace(d+df+1, 100, 10)
+    p = multiprocessing.Pool()
+    mp_solutions = p.map(fun3, x)
+
+    pylab.plot(x,mp_solutions)
