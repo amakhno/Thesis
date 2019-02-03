@@ -99,7 +99,7 @@ if __name__ == "__main__":
     #verctorized_nsv_norm = np.vectorize(nsv_norm)
     #print('Original:' + str(verctorized_nsv_norm(x_tt)))    
 
-    p = Pool(4)
+    p = Pool()
     mp_solutions = p.map(nsv_norm, x_tt)
     print(str(mp_solutions))
     f = open('out.txt', 'w')
