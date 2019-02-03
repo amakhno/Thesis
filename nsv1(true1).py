@@ -3,9 +3,9 @@ import math
 import scipy.integrate as integrate
 import numpy as np
 import pylab
-import multiprocessing
+from multiprocessing import Pool
 
-np.seterr(all='print')
+np.seterr(all='ignore')
 
 mev = 0.511
 n = 1
@@ -26,6 +26,7 @@ m = mn*a1*a2/(a1+a2)
 d = d/mev
 df = df/mev
 tt = tt*1e-10/1.16/mev
+
 
 def kf(ef):
     return math.sqrt(2*m*ef)
@@ -54,9 +55,9 @@ def fun1(t, ei, ef):
     c = 1
     res = mp.hyp2f1(a, b, c, x)
     #checkRes = (1-x)**(c-a-b) * mp.hyp2f1(c-a, c-b, c, x)
-    #diff = np.sqrt((res.imag - checkRes.imag)**2 +
+    # diff = np.sqrt((res.imag - checkRes.imag)**2 +
     #               (res.real - checkRes.real)**2)
-    #if (diff > 1e-9):
+    # if (diff > 1e-9):
     #    print("Error: " + str(diff))
     return (res.real*res.real+res.imag*res.imag)/(ki*ki+kf*kf-2*ki*kf*t)/(ki*ki+kf*kf-2*ki*kf*t)
 
@@ -75,37 +76,32 @@ def fun2(ef, ei):
     return c/(np.exp(2*np.pi*lf)-1)*sig1res
 
 
-def fun3(ei):
+def fun3(ei, tt):
     li = z1*z2*aa*np.sqrt(m/2/ei)
-    res = integrate.quad(lambda x, ei: fun2(x, ei), 0.0, ei-d-df-1, args=ei)[0]
+    res = integrate.quad(lambda x, args: fun2(x, args), 0.0, ei-d-df-1, args=ei)[0]
     ww = ei*np.exp(-ei/tt)
     return ww*z2*z2*256*np.sqrt(2)*aa*aa*aa*aa*gv*gv*m*m*m*m*m*z1*(z1+1) * z2*z2/(105*math.pi*ei)/(1-np.exp(-2*math.pi*li))*res
 
 
-def nsv(d):
-    res = integrate.quad(lambda x: fun3(x), d+df+1, np.inf)
+def nsv(tt):
+    res = integrate.quad(lambda x, args: fun3(x, args), d+df+1, np.inf, args=tt)
     return math.sqrt(8/math.pi/m/tt/tt/tt)*res[0]*0.19448
 
-def nsv_norm(d):
-    return nsv(d)*44.722E-12
 
-print(nsv_norm(d))
+def nsv_norm(tt):
+    return nsv(tt)*44.722E-12
 
-#for i in range(0, len(t_array)):
-    #tt = t_array[i]
-    #res = nsv_norm(d)
-    #print(str(t_array[i]) + ' ' + str(res), file=f1)
+if __name__ == "__main__":
+    x = np.linspace(1e8, 1e10, 24)
+    x_tt = x*1e-10/1.16/mev
 
-# print(nsv(d)*44.722E-12)
-# if __name__ == "__main__":
-#     vectorisedFunc3 = np.vectorize(fun3)
+    # Compare with original version
+    #verctorized_nsv_norm = np.vectorize(nsv_norm)
+    #print('Original:' + str(verctorized_nsv_norm(x_tt)))    
 
-#     xz = np.linspace(d+df+1+0.2, 10, 5)
-
-#     yz = vectorisedFunc3(xz)
-#     #p = multiprocessing.Pool(11)
-#     #mp_solutions = p.map(fun3, x)
-
-#     pylab.autoscale(enable=True, axis='both', tight=True)
-#     pylab.plot(xz,yz)
-#     pylab.show()
+    p = Pool(4)
+    mp_solutions = p.map(nsv_norm, x_tt)
+    print(str(mp_solutions))
+    f = open('out.txt', 'w')
+    for i in range(0, len(mp_solutions)):
+        print(str(x[i]) + ' ' + str(mp_solutions[i]), file=f)
