@@ -16,17 +16,20 @@ for index in range(0, len(content)):
 
 def build_a(t_arr):
     if isinstance(t_arr, list):
-        if len(t_arr) == 7:
+        if len(t_arr) >= 7:
             a = []
-            for index in range(7):
+            for index in range(len(t_arr)):
                 t = t_arr[index]
                 a.append([1, t, t**2, t**3, t**4, t**5, t**6])
-            return np.array([a])
+            return a
         else:
             pass
     else:
         pass
-a = build_a(t_array[0:7])
-b = [sig_array[0:7]]
+a = build_a(t_array)
+b = sig_array
 
-print(np.linalg.solve(a, b))
+print(np.linalg.solve(a[0:7], b[0:7]))
+
+x, _, _, _ =np.linalg.lstsq(a, b)
+print(x)
