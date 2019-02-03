@@ -3,6 +3,7 @@ import math
 import scipy.integrate as integrate
 import numpy as np
 import pylab
+import time
 from multiprocessing import Pool
 
 np.seterr(all='ignore')
@@ -100,7 +101,9 @@ if __name__ == "__main__":
     #print('Original:' + str(verctorized_nsv_norm(x_tt)))    
 
     p = Pool()
+    start_time = time.time()
     mp_solutions = p.map(nsv_norm, x_tt)
+    print("--- %s seconds ---" % (time.time() - start_time))
     print(str(mp_solutions))
     f = open('out.txt', 'w')
     for i in range(0, len(mp_solutions)):
