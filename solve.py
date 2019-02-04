@@ -8,7 +8,7 @@ content = [x.strip() for x in content]
 t_array = []
 sig_array = []
 
-for index in range(0, len(content)):
+for index in range(1, len(content)):
     splitted = content[index].rsplit(' ')
     t_array.append(float(splitted[0]))
     sig_array.append(float(splitted[1]))
@@ -28,8 +28,8 @@ def build_a(t_arr):
         pass
 a = build_a(t_array)
 b = sig_array
-
-print(np.linalg.solve(a[0:7], b[0:7]))
+f=open('solve.txt', 'w')
+print(np.linalg.solve(a[0:7], b[0:7]), file=f)
 
 x, _, _, _ =np.linalg.lstsq(a, b)
-print(x)
+print(x, file=f)

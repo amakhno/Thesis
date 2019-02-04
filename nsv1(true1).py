@@ -56,7 +56,7 @@ def fun1(t, ei, ef):
     c = 1
     res = mp.hyp2f1(a, b, c, x)
     #checkRes = (1-x)**(c-a-b) * mp.hyp2f1(c-a, c-b, c, x)
-    # diff = np.sqrt((res.imag - checkRes.imag)**2 +
+    #diff = np.sqrt((res.imag - checkRes.imag)**2 +
     #               (res.real - checkRes.real)**2)
     # if (diff > 1e-9):
     #    print("Error: " + str(diff))
@@ -93,7 +93,7 @@ def nsv_norm(tt):
     return nsv(tt)*44.722E-12
 
 if __name__ == "__main__":
-    x = np.linspace(1e8, 1e10, 24)
+    x = np.linspace(1e8, 1e10, 240)
     x_tt = x*1e-10/1.16/mev
 
     # Compare with original version
@@ -103,8 +103,8 @@ if __name__ == "__main__":
     p = Pool()
     start_time = time.time()
     mp_solutions = p.map(nsv_norm, x_tt)
-    print("--- %s seconds ---" % (time.time() - start_time))
-    print(str(mp_solutions))
     f = open('out.txt', 'w')
+    print("--- %s seconds ---" % (time.time() - start_time), file=f)
+    print(str(mp_solutions))    
     for i in range(0, len(mp_solutions)):
         print(str(x[i]) + ' ' + str(mp_solutions[i]), file=f)
