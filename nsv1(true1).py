@@ -97,12 +97,13 @@ if __name__ == "__main__":
     x_tt = x*1e-10/1.16/mev
 
     # Compare with original version
-    #verctorized_nsv_norm = np.vectorize(nsv_norm)
-    #print('Original:' + str(verctorized_nsv_norm(x_tt)))    
+    # verctorized_nsv_norm = np.vectorize(nsv_norm)
+    # print('Original:' + str(verctorized_nsv_norm(x_tt)))    
 
     p = Pool()
     start_time = time.time()
-    mp_solutions = p.map(nsv_norm, x_tt)
+    nsv_norm(1e9)
+    #mp_solutions = p.map(nsv_norm, x_tt)
     f = open('out.txt', 'w')
     print("--- %s seconds ---" % (time.time() - start_time), file=f)
     print(str(mp_solutions))    
