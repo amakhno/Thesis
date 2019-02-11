@@ -81,7 +81,7 @@ class Sig_Calculate:
         self.lambda_i = self.Lambda_i(eps_i)
         top_limit = eps_i - self.d - self.df
         integral = dblquad(self.ResultFunc, 0, top_limit, self.X_0, lambda eps_f: 0,
-                           args=[eps_i])
+                           args=[eps_i], epsabs=1e-1)
         mltiple = (4 * 2**0.5 / cmath.pi) * \
             ((self.gv**2 * self.aplha_e**4 * self.z1 * (self.z1 + 1) * self.z2**4 * self.m**(9/2))) \
             / (eps_i**1.5 * (1 - np.exp(-2 * cmath.pi * float(self.lambda_i)))) * self.ksi_b
@@ -96,12 +96,42 @@ def work(value):
         raise "error"
 
 
-if __name__ == "__main__":
+def compare_fun3_for_test():
     x_array = np.linspace(9.04500978473581, 20, 100)
     p = Pool()
     start_time = time.time()
+    f = open('out-fuc-3-true.txt', 'w')
     y_array = p.map(work, x_array)
+    for i in range(0, len(y_array)):
+        print(str(x_array[i]) + ' ' + str(y_array[i]), file=f)
     print("--- %s seconds ---" % (time.time() - start_time))
-    pylab.plot(x_array, y_array)
+
+def compare_files():
+    x_array = np.linspace(9.04500978473581, 20, 100)
+    y_array_true = []
+    y_array = []
+    with open('out-fuc-3-true.txt') as inf:
+        for line in inf:
+            parts = line.split()  # split line into parts
+            if len(parts) > 1:   # if at least 2 parts/columns
+                y_array_true.append(float(parts[1]))   # print column 2
+    with open('out-fuc-3.txt') as inf:
+        for line in inf:
+            parts = line.split()  # split line into parts
+            if len(parts) > 1:   # if at least 2 parts/columns
+                y_array.append(float(parts[1]))   # print column 2
+    pylab.plot(x_array, y_array, '11', x_array, y_array_true)
     pylab.yscale('log')
     pylab.show()
+
+
+if __name__ == "__main__":
+    compare_fun3_for_test()
+    # x_array = np.linspace(9.04500978473581, 20, 100)
+    # p = Pool()
+    # start_time = time.time()
+    # y_array = p.map(work, x_array)
+    # print("--- %s seconds ---" % (time.time() - start_time))
+    # pylab.plot(x_array, y_array)
+    # pylab.yscale('log')
+    # pylab.show()
