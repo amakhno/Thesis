@@ -1,5 +1,6 @@
 import mpmath as mp
 from scipy.integrate import dblquad
+import scipy.integrate as integrate
 import numpy as np
 import cmath
 import math
@@ -12,9 +13,9 @@ class Sig_Calculate:
     mev = 0.511
     d = 3.6
     df = 0.0
-    z1 = 3.4e1
+    z1 = 48
     z2 = 1
-    a1 = 7.8e1
+    a1 = 112
     a2 = 1
 
     mn = 1.835E3
@@ -81,11 +82,18 @@ class Sig_Calculate:
         self.lambda_i = self.Lambda_i(eps_i)
         top_limit = eps_i - self.d - self.df
         integral = dblquad(self.ResultFunc, 0, top_limit, self.X_0, lambda eps_f: 0,
-                           args=[eps_i], epsabs=1e-1)
+                           args=[eps_i])
         mltiple = (4 * 2**0.5 / cmath.pi) * \
             ((self.gv**2 * self.aplha_e**4 * self.z1 * (self.z1 + 1) * self.z2**4 * self.m**(9/2))) \
             / (eps_i**1.5 * (1 - np.exp(-2 * cmath.pi * float(self.lambda_i)))) * self.ksi_b
         return mltiple * integral[0]
+
+    def fun3(self, eps_i, tt):
+        return math.exp(-eps_i/tt)*eps_i*self.sig(eps_i)
+
+    def sigv(self, tt):
+        res = integrate.quad(self.fun3, self.d+self.df+1, np.inf, args=tt)
+        return math.sqrt(8/math.pi/self.m/tt/tt/tt)*res[0] #*0.09747
 
 
 def work(value):
@@ -95,13 +103,21 @@ def work(value):
     else:
         raise "error"
 
+def work2(value):
+    if isinstance(value, float):
+        calc = Sig_Calculate()
+        return calc.sigv(float(value)) * 44.7e-12
+    else:
+        raise "error"
+
 
 def compare_fun3_for_test():
-    x_array = np.linspace(9.04500978473581, 20, 100)
+    x_array = np.linspace(1e8, 1e10, 6)
+    x_array = x_array * 1e-10/1.16/0.511
     p = Pool()
     start_time = time.time()
     f = open('out-fuc-3-true.txt', 'w')
-    y_array = p.map(work, x_array)
+    y_array = p.map(work2, x_array)
     for i in range(0, len(y_array)):
         print(str(x_array[i]) + ' ' + str(y_array[i]), file=f)
     print("--- %s seconds ---" % (time.time() - start_time))
@@ -120,13 +136,14 @@ def compare_files():
             parts = line.split()  # split line into parts
             if len(parts) > 1:   # if at least 2 parts/columns
                 y_array.append(float(parts[1]))   # print column 2
-    pylab.plot(x_array, y_array, '11', x_array, y_array_true)
+    pylab.plot(x_array, y_array, x_array, y_array_true)
     pylab.yscale('log')
     pylab.show()
 
 
 if __name__ == "__main__":
     compare_fun3_for_test()
+    #compare_files()
     # x_array = np.linspace(9.04500978473581, 20, 100)
     # p = Pool()
     # start_time = time.time()
