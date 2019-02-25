@@ -93,7 +93,7 @@ class Sig_Calculate:
 
     def sigv(self, tt):
         res = integrate.quad(self.fun3, self.d+self.df+1, np.inf, args=tt)
-        return math.sqrt(8/math.pi/self.m/tt/tt/tt)*res[0] #*0.09747
+        return math.sqrt(8/math.pi/self.m/tt/tt/tt)*res[0] * 0.19448
 
 
 def work(value):

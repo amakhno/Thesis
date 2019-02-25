@@ -13,9 +13,9 @@ n = 1
 d = 3.6
 df = 0.0
 tt = 1.0e8
-z1 = 3.4e1
+z1 = 48
 z2 = 1
-a1 = 7.8e1
+a1 = 112
 a2 = 1
 
 mn = 1.835E3
@@ -94,20 +94,24 @@ def nsv(tt):
 def nsv_norm(tt):
     return nsv(tt)*44.722E-12
 
+def work2(value):
+    if isinstance(value, float):
+        return nsv_norm(float(value)) * 44.7e-12
+    else:
+        raise "error"
+
 def compare_fun3_for_test():
-    x_array = np.linspace(5, 50, 20)
+    x_array = np.linspace(1e8, 1e10, 6)
+    x_array = x_array * 1e-10/1.16/0.511
     p = Pool()
     start_time = time.time()
     f = open('out-fuc-3.txt', 'w')
-    y_array = p.map(fun3_for_test, x_array)
+    y_array = p.map(work2, x_array)
     for i in range(0, len(y_array)):
          print(str(x_array[i]) + ' ' + str(y_array[i]), file=f)
     print("--- %s seconds ---" % (time.time() - start_time))
 
 if __name__ == "__main__":
-    x = np.linspace(1e8, 1e10, 240)
-    x_tt = x*1e-10/1.16/mev
-
     # Compare with original version
     # verctorized_nsv_norm = np.vectorize(nsv_norm)
     # print('Original:' + str(verctorized_nsv_norm(x_tt)))    
