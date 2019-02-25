@@ -91,12 +91,11 @@ def nsv(tt):
     res = integrate.quad(lambda x, args: fun3(x, args), d+df+1, np.inf, args=tt)
     return math.sqrt(8/math.pi/m/tt/tt/tt)*res[0]*0.19448
 
-
 def nsv_norm(tt):
     return nsv(tt)*44.722E-12
 
 def compare_fun3_for_test():
-    x_array = np.linspace(9.04500978473581, 20, 100)
+    x_array = np.linspace(5, 50, 20)
     p = Pool()
     start_time = time.time()
     f = open('out-fuc-3.txt', 'w')

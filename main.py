@@ -55,7 +55,7 @@ class Sig_Calculate:
     def Inner_func(self, x, eps_f):
         k_f = self.Get_k_f(eps_f)
         lambda_f = self.Lambda_f(eps_f)
-        return abs(mp.hyp2f1(-self.lambda_i*1j, -lambda_f*1j, 1, x)**2) / (1 - x)**2
+        return abs(mp.hyp2f1(-self.lambda_i*1j, -lambda_f*1j, 1, x))**2 / (1 - x)**2
 
     def E_f(self, eps_f, eps_i):
         return eps_i - eps_f - self.d - self.df
@@ -63,7 +63,7 @@ class Sig_Calculate:
     def Outer_func(self, eps_f, eps_i):
         e_f = self.E_f(eps_f, eps_i)
         k_f = self.Get_k_f(eps_f)
-        result = self.Phi(e_f) / (np.exp(2*cmath.pi*float(self.Lambda_f(eps_f)))
+        result = self.Phi(e_f) / (np.exp(2*cmath.pi*float(self.Lambda_f(eps_f)) - 1)
                                   * k_f*(self.k_i - k_f)**4 * (self.k_i+k_f)**2)
         return result
 
