@@ -25,7 +25,7 @@ def build_a(t_arr):
             a = []
             for index in range(len(t_arr)):
                 t = t_arr[index]
-                a.append([1, t, t**2, t**3, t**4, t**5, t**6])
+                a.append([1, t**(-1), t**(-1/3), t**(1/3), t, t**(5/3), np.log(t)])
             return a
         else:
             pass
