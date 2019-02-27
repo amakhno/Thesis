@@ -112,7 +112,7 @@ def work2(value):
 
 
 def compare_fun3_for_test():
-    x_array = np.linspace(1e8, 1e10, 6)
+    x_array = np.linspace(1e8, 1e10, 24)
     x_array = x_array * 1e-10/1.16/0.511
     p = Pool()
     start_time = time.time()

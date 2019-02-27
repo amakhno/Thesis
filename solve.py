@@ -1,21 +1,26 @@
 import numpy as np
 
-with open('out.txt') as f:
+with open('out-fuc-3-true.txt') as f:
     content = f.readlines()
 
 content = [x.strip() for x in content]
 
-t_array = []
+t_array = np.linspace(1e8, 1e10, 24)
 sig_array = []
 
-for index in range(1, len(content)):
+for index in range(0, len(content)):
     splitted = content[index].rsplit(' ')
-    t_array.append(float(splitted[0]))
-    sig_array.append(float(splitted[1]))
+    # t_array.append(float(splitted[0]))
+    val = float(splitted[1])
+    if (val > 0):
+        sig_array.append(np.log(val))
+    else:
+        sig_array.append(np.log(np.abs(val)))
+    
 
 
 def build_a(t_arr):
-    if isinstance(t_arr, list):
+    if isinstance(t_arr, np.ndarray):
         if len(t_arr) >= 7:
             a = []
             for index in range(len(t_arr)):
@@ -28,8 +33,9 @@ def build_a(t_arr):
         pass
 a = build_a(t_array)
 b = sig_array
-f=open('solve.txt', 'w')
+f=open('solved.txt', 'w')
 print(np.linalg.solve(a[0:7], b[0:7]), file=f)
 
-x, _, _, _ =np.linalg.lstsq(a, b)
+x, _, _, _ =np.linalg.lstsq(a, b, rcond=1)
 print(x, file=f)
+f.close()
