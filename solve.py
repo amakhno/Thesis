@@ -1,17 +1,17 @@
 import numpy as np
 import pylab
 
-with open('out-fuc-3-true.txt') as f:
+with open('out-main.txt') as f:
     content = f.readlines()
 
 content = [x.strip() for x in content]
 
-t_array = np.linspace(0.1, 10, 24)
+t_array = []
 sig_array = []
 
 for index in range(0, len(content)):
     splitted = content[index].rsplit(' ')
-    # t_array.append(float(splitted[0]))
+    t_array.append(float(splitted[0])/1e9)
     val = float(splitted[1])
     if (val > 0):
         sig_array.append(np.log(val))
@@ -20,7 +20,7 @@ for index in range(0, len(content)):
     
 
 def build_a(t_arr):
-    if isinstance(t_arr, np.ndarray):
+    if isinstance(t_arr, list):
         if len(t_arr) >= 7:
             a = []
             for index in range(len(t_arr)):
@@ -31,6 +31,7 @@ def build_a(t_arr):
             pass
     else:
         pass
+
 a = build_a(t_array)
 b = sig_array
 f=open('solved.txt', 'w')
@@ -64,10 +65,8 @@ plot_solution(t_array, x_lstsq, True)
 print("lstsq2")
 x_lstsq, _, _, _ =np.linalg.lstsq(a[2:20], b[2:20], rcond=1)
 plot_solution(t_array, x_lstsq, True)
-
-for sol_index in range(0, len(y)):
-    current_sol = y[sol_index]
-    plot_solution(t_array, current_sol, True)
+print(x_lstsq, file=f)
+f.close()
 
 #pylab.plot(x, y)
 #pylab.xticks(x, x, rotation='vertical', )

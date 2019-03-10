@@ -36,6 +36,11 @@ class Sig_Calculate:
     lambda_i = 0
     k_i = 0
 
+    def __init__(self, a1, z1, d, df, beta):
+        self.a1 = a1; self.z1 = z1; self.d = d/self.mev; self.df = df/self.mev
+        self.m = self.mn*a1*self.a2/(a1+self.a2)
+        self.ksi_b = 6250 / 10**beta
+
     def Phi(self, E):
         return 1/60 * (E**2 - 1)**0.5 * (2*E**4 - 9*E**2 - 8) \
             + 1/4 * E * np.log(E + (E**2 - 1)**0.5)
@@ -91,64 +96,37 @@ class Sig_Calculate:
     def fun3(self, eps_i, tt):
         return math.exp(-eps_i/tt)*eps_i*self.sig(eps_i)
 
-    def sigv(self, tt):
+    def sigv(self, tt):        
+        tt = tt * 1e-10/1.16/self.mev
         res = integrate.quad(self.fun3, self.d+self.df+1, np.inf, args=tt)
-        return math.sqrt(8/math.pi/self.m/tt/tt/tt)*res[0] * 0.19448
+        return math.sqrt(8/math.pi/self.m/tt/tt/tt)*res[0] * 0.19448 * 44.7e-12
 
+def thread_work(input_array):
+    tt = input_array[0]
+    a1 = input_array[1]
+    z1 = input_array[2]
+    d = input_array[3]
+    df = input_array[4]
+    beta = input_array[5]
+    calc = Sig_Calculate(a1, z1, d, df, beta)
+    return calc.sigv(tt)
 
-def work(value):
-    if isinstance(value, float):
-        calc = Sig_Calculate()
-        return calc.sig(float(value))
-    else:
-        raise "error"
-
-def work2(value):
-    if isinstance(value, float):
-        calc = Sig_Calculate()
-        return calc.sigv(float(value)) * 44.7e-12
-    else:
-        raise "error"
-
-
-def compare_fun3_for_test():
-    x_array = np.linspace(1e8, 1e10, 24)
-    x_array = x_array * 1e-10/1.16/0.511
+def build_full_range(a1, z1, d, df, beta):
+    t_array = np.linspace(1e8, 1e10, 24)
+    input_array = []
+    for i in range(0, len(t_array)):
+        input_array.append([t_array[i], a1, z1, d, df, beta])
     p = Pool()
+    #y_array = [thread_work(input_array[0])]
     start_time = time.time()
-    f = open('out-fuc-3-true.txt', 'w')
-    y_array = p.map(work2, x_array)
+    f = open('out-main.txt', 'w')
+    y_array = p.map(thread_work, input_array)
     for i in range(0, len(y_array)):
-        print(str(x_array[i]) + ' ' + str(y_array[i]), file=f)
+        print(str(t_array[i]) + ' ' + str(y_array[i]), file=f)
     print("--- %s seconds ---" % (time.time() - start_time))
-
-def compare_files():
-    x_array = np.linspace(9.04500978473581, 20, 100)
-    y_array_true = []
-    y_array = []
-    with open('out-fuc-3-true.txt') as inf:
-        for line in inf:
-            parts = line.split()  # split line into parts
-            if len(parts) > 1:   # if at least 2 parts/columns
-                y_array_true.append(float(parts[1]))   # print column 2
-    with open('out-fuc-3.txt') as inf:
-        for line in inf:
-            parts = line.split()  # split line into parts
-            if len(parts) > 1:   # if at least 2 parts/columns
-                y_array.append(float(parts[1]))   # print column 2
-    pylab.plot(x_array, y_array, x_array, y_array_true)
-    pylab.yscale('log')
-    pylab.show()
+    return y_array
 
 
 if __name__ == "__main__":
-    compare_fun3_for_test()
-    #compare_files()
-    # x_array = np.linspace(9.04500978473581, 20, 100)
-    # p = Pool()
-    # start_time = time.time()
-    # y_array = p.map(work, x_array)
-    # print("--- %s seconds ---" % (time.time() - start_time))
-    # pylab.plot(x_array, y_array)
-    # pylab.yscale('log')
-    # pylab.show()
+    result = build_full_range(108, 47, 3.6, 0, 4.8)
+    print(result)
