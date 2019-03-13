@@ -12,7 +12,7 @@ sig_array = []
 for index in range(0, len(content)):
     splitted = content[index].rsplit(' ')
     t_array.append(float(splitted[0])/1e9)
-    val = float(splitted[1])
+    val = float(splitted[1]) * 1e25
     if (val > 0):
         sig_array.append(np.log(val))
     else:
