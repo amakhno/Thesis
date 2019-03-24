@@ -1,0 +1,12 @@
+-L/opt/intel/compilers_and_libraries_2019.1.144/linux/mkl/lib/intel64 -lmkl_rt -lpthread -lm -ldl
+add this to all link.txt for MKL
+
+Don't forget to add 
+"export PYTHONPATH=$PYTHONPATH:/home/noir/skynet-mkl/lib
+
+source /opt/intel/bin/compilervars.sh intel64 -platform linux <- only this one, probably
+source /opt/intel/bin/iccvars.sh intel64 -platform linux
+source /opt/intel/bin/ifortvars.sh intel64 -platform linux
+source /opt/intel/bin/test.sh intel64 -platform linux"
+
+to your ~/.bashrc
