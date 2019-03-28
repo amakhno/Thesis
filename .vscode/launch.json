@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug main.py (Integrated Terminal)",
+            "name": "Debug main.py (externalTerminal)",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/main.py",

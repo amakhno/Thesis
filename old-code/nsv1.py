@@ -41,12 +41,6 @@ def lf(ef):
 def li(ei):
     return z1*z2*aa*math.sqrt(m/2/ei)
 
-
-def fun3(ei):
-    send_ei = ei
-    return exp(-ei/tt)*ei*sigb(ei)
-
-
 def ki(ei):
     return math.sqrt(2*m*ei)
 
@@ -64,8 +58,8 @@ def fun1(t):
     kkf = math.sqrt(2*m*ef)
     #print(kki, kkf, t)
     x = 2*(1-t)/(ki(ei)/kf(ef)+kf(ef)/ki(ei)-2*t)
-    llf = (z1+1)*z2*aa*math.sqrt(m/2/ef)
-    lli = z1*z2*aa*math.sqrt(m/2/ei)
+    # llf = (z1+1)*z2*aa*math.sqrt(m/2/ef)
+    # lli = z1*z2*aa*math.sqrt(m/2/ei)
     a = 1 + 2j
     b = 3j
     c = 3 + 2j
