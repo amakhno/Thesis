@@ -1,5 +1,4 @@
 import mpmath as mp
-from scipy.integrate import dblquad
 import scipy.integrate as integrate
 import numpy as np
 import cmath
@@ -87,7 +86,7 @@ class Sig_Calculate:
         self.k_i = self.Get_k_i(eps_i)
         self.lambda_i = self.Lambda_i(eps_i)
         top_limit = eps_i - self.d - self.df
-        integral = dblquad(self.ResultFunc, 0.0, top_limit, self.X_0, lambda eps_f: 0.0,
+        integral = integrate.dblquad(self.ResultFunc, 0.0, top_limit, self.X_0, lambda eps_f: 0.0,
                            args=[eps_i])
         mltiple = (4.0 * 2.0**0.5 / cmath.pi) * \
             ((self.gv**2.0 * self.aplha_e**4.0 * self.z1 * (self.z1 + 1.0) * self.z2**4.0 * self.m**(9.0/2.0))) \
@@ -122,7 +121,6 @@ def build_full_range(a1, z1, d, df, beta, nuc_name1, nuc_name2):
     f = open('out-sig/{0}{1}-{2}{1}.txt'.format(nuc_name1,
                                                 int(a1), nuc_name2), 'w')
     p = Pool(12)
-    #y_array = [thread_work(input_array[0])]
     start_time = time.time()
     y_array = p.map(thread_work, input_array)
     p.close()
