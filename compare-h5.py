@@ -90,7 +90,6 @@ def compare_h5(fn1, fn2):
         z_compare = dictionary[''.join(x for x in item_for_compare if x.isalpha())]
         a = int(''.join(x for x in elem_name if x.isdigit()))
         a_compare = int(''.join(x for x in item_for_compare if x.isdigit()))
-        elem_index_for_compare = get_index(store1, a_compare, z_compare)
         elem_index = get_index(store1, a, z)
         size_t1, _ = store1.root.Y.shape
         y1 = store1.root.Y[size_t1 - 1][elem_index]
