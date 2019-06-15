@@ -14,7 +14,9 @@ array_of_interesting_nucldies_mother = [
     "sn114",
     "ce136",
     " sr84",
-    "te120"
+    "te120",
+    " se74",
+    "hf136"
 ]
 
 dictionary = {
@@ -26,7 +28,9 @@ dictionary = {
     "sn": 50,
     "ce": 58,
     "sr": 38,
-    "te": 43
+    "te": 43,
+    "se": 34,
+    "hf": 72
 }
 
 experimental_data = {
@@ -84,12 +88,12 @@ def compare_h5(fn1, fn2):
     store2 = pd.io.pytables.HDFStore(fn2)
     
     for index in range(0, len(array_of_interesting_nucldies_mother)):
-        item_for_compare = 'kr78'
+        # item_for_compare = 'kr78'
         elem_name = array_of_interesting_nucldies_mother[index]
         z = dictionary[''.join(x for x in elem_name if x.isalpha())]        
-        z_compare = dictionary[''.join(x for x in item_for_compare if x.isalpha())]
+        # z_compare = dictionary[''.join(x for x in item_for_compare if x.isalpha())]
         a = int(''.join(x for x in elem_name if x.isdigit()))
-        a_compare = int(''.join(x for x in item_for_compare if x.isdigit()))
+        # a_compare = int(''.join(x for x in item_for_compare if x.isdigit()))
         elem_index = get_index(store1, a, z)
         size_t1, _ = store1.root.Y.shape
         y1 = store1.root.Y[size_t1 - 1][elem_index]
