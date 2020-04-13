@@ -104,5 +104,4 @@ venv.bak/
 .mypy_cache/
 .vscode/settings.json
 
-.log
-out-r-full/
+*.h5
