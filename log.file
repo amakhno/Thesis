@@ -1,0 +1,20 @@
+/opt/conda/lib/python3.7/site-packages/notebook/services/kernels/kernelmanager.py:19: VisibleDeprecationWarning: zmq.eventloop.minitornado is deprecated in pyzmq 14.0 and will be removed.
+    Install tornado itself to use zmq with the tornado IOLoop.
+    
+  from jupyter_client.session import Session
+[I 07:56:18.380 NotebookApp] Writing notebook server cookie secret to /home/noir/.local/share/jupyter/runtime/notebook_cookie_secret
+[I 07:56:18.559 NotebookApp] Serving notebooks from local directory: /home/noir/notebook
+[I 07:56:18.559 NotebookApp] The Jupyter Notebook is running at:
+[I 07:56:18.560 NotebookApp] http://2bec21647eda:8888/
+[I 07:56:18.561 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[W 07:56:19.008 NotebookApp] Clearing invalid/expired login cookie username-localhost-8888
+[W 07:56:19.009 NotebookApp] Clearing invalid/expired login cookie username-localhost-8888
+[I 07:56:19.010 NotebookApp] 302 GET /notebooks/plots/main.ipynb (172.17.0.1) 2.48ms
+[I 07:56:21.619 NotebookApp] 302 POST /login?next=%2Fnotebooks%2Fplots%2Fmain.ipynb (172.17.0.1) 1.18ms
+[I 07:56:22.314 NotebookApp] Writing notebook-signing key to /home/noir/.local/share/jupyter/notebook_secret
+[W 07:56:22.316 NotebookApp] Notebook plots/main.ipynb is not trusted
+[I 07:56:22.902 NotebookApp] Kernel started: d89ecf34-85ea-4a6a-aa74-7203e6787b34
+/opt/conda/lib/python3.7/site-packages/ipykernel_launcher.py:15: VisibleDeprecationWarning: zmq.eventloop.minitornado is deprecated in pyzmq 14.0 and will be removed.
+    Install tornado itself to use zmq with the tornado IOLoop.
+    
+  from ipykernel import kernelapp as app
