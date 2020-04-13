@@ -105,3 +105,4 @@ venv.bak/
 .vscode/settings.json
 
 *.h5
+log.file
